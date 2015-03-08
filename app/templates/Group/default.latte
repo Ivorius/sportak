@@ -1,0 +1,11 @@
+{block content}
+
+Zúčastněné školy:
+
+
+{foreach $schools as $school}
+
+   {$school->izo}: {$school->name}<br>
+
+{/foreach}
+{/block}

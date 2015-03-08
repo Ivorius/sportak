@@ -1,0 +1,13 @@
+log/*
+nbproject
+temp/*
+bin/*
+vendor/*
+!vendor/others
+readme.md
+
+.DS_Store
+!.gitignore
+!.htaccess
+!web.config
+app/config/config.local.neon
