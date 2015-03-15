@@ -16,21 +16,31 @@ class EditGroupControl extends Nette\Application\UI\Control {
 	private $em;
 	private $formFactory;
 	private $group;
+	private $userIdentity;
 
-	public function __construct(App\Entity\Group $group, Kdyby\Doctrine\EntityManager $em, App\Forms\IEntityFormFactory $formFactory) {
-		$this->school = $group;
+	public function __construct(App\Entity\Group $group, Kdyby\Doctrine\EntityManager $em, App\Forms\IEntityFormFactory $formFactory, Nette\Security\User $user) {
+		$this->group = $group;
 		$this->em = $em;
 		$this->formFactory = $formFactory;
+		$this->userIdentity = $user->identity;
 	}
 
 	protected function createComponentForm() {
 		$form = $this->formFactory->create();
 
 		$form->addText('name', 'Název třídy');
+
+		$form->addSelect('grade', 'Ročník')
+				->setPrompt('(vyberte ročník)')
+				->setOption(Kdyby\DoctrineForms\IComponentMapper::ITEMS_TITLE, 'name');
+	
+
 		$form->addSubmit('save', 'Uložit');
 		
 		$form->onSuccess[] = function (App\Forms\EntityForm $form) {
-			$this->em->persist($group = $form->getEntity())->flush();
+			$group = $form->getEntity();
+			$group->school = $this->userIdentity->school;
+			$this->em->persist($group)->flush();
 			$this->onSave($group);
 		};
 
@@ -52,4 +62,3 @@ interface IEditGroupControlFactory {
 	 */
 	function create(App\Entity\Group $group);
 }
-

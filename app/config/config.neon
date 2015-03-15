@@ -24,15 +24,22 @@ nette:
 services:
 	router: App\RouterFactory::createRouter
 
+	- App\Authenticator
+	- App\Authorizator
+
 	- App\SchoolsFacade
+	- App\GroupsFacade
+	- App\UsersFacade
 
+	- App\Components\ISignInControlFactory
 	- App\Components\IEditSchoolControlFactory
-
+	- App\Components\IEditGroupControlFactory
+	- App\Components\IEditUserControlFactory
 	- 
-			implement: App\Forms\IEntityFormFactory
-			inject: yes
-			setup:
-					- addProtection
+		implement: App\Forms\IEntityFormFactory
+		inject: yes
+		setup:
+				- addProtection
 
 extensions:
 	console: Kdyby\Console\DI\ConsoleExtension

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -52,18 +53,30 @@ class School extends \Kdyby\Doctrine\Entities\BaseEntity {
 	protected $postcode;
 
 	/**
-	 * @ORM\OneToMany(targetEntity="Group", mappedBy="school")
+	 * @ORM\OneToMany(targetEntity="Group", mappedBy="school", cascade={"persist"})
 	 */
 	protected $groups;
 
 	/**
-	 * @ORM\OneToMany(targetEntity="Student", mappedBy="school")
+	 * @ORM\OneToMany(targetEntity="Student", mappedBy="school", cascade={"persist"})
 	 */
 	protected $students;
 
 	/**
-	 * @ORM\OneToMany(targetEntity="Result", mappedBy="results")
+	 * @ORM\OneToMany(targetEntity="Result", mappedBy="school", cascade={"persist"})
 	 */
 	protected $results;
-
+	
+	/**
+	 * @ORM\OneToMany(targetEntity="User", mappedBy="school", cascade={"persist"})
+	 */
+	protected $users;
+	
+	
+    public function __construct() {
+        $this->groups = new ArrayCollection();
+		$this->students = new ArrayCollection();
+		$this->users = new ArrayCollection();
+		$this->results = new ArrayCollection();
+    }
 }

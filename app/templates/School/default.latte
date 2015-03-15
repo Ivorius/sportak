@@ -1,11 +1,30 @@
 {block content}
 
-Zúčastněné školy:
+<h1 n:block="title">Informace o škole</h1>
+{if $school}
+	<div class="col-md-6">
+		<h2>Základní info</h2>
+	<p>
+		Název: {$school->name}<br>
+		IZO: {$school->izo}<br>
+		Ulice: {$school->street}<br>
+		Město: {$school->town}<br>
+		PSČ: {$school->postcode}<br>
+	</p>
+	<p><a n:href="School:edit">Editovat školu</a></p>
+	</div>
+	<div class="col-md-6">
+	<h2>Učitelé registrovaní k této škole</h2>
+	{foreach $school->users AS $userEnt}
+		{$userEnt->firstname} {$userEnt->lastname}, email: <a href="mailto:{$userEnt->email}">{$userEnt->email}</a><br>
+	{/foreach}
+	
+	<h3>Přidat učitele</h3>
+	<p>Přidání dalšího registrovaného učitele ke škole</p>
+	{control addUserForm}
+	</div>
+{else}
+	<p>Pro fungování systému je zapotřebí, abyste měl <a n:href="School:edit">zaregistrovanou školu</a></p>
+{/if}
 
-
-{foreach $schools as $school}
-
-   {$school->izo}: {$school->name}<br>
-
-{/foreach}
 {/block}

@@ -19,6 +19,21 @@ class SchoolsFacade extends Nette\Object {
 		$this->dao = $em->getRepository(Entity\School::getClassName());
 	}
 
+	/**
+	 * 
+	 * @param object|array|\Traversable $entity
+	 * @param object|array|\Traversable $relations
+	 * @throws InvalidArgumentException
+	 * @return array
+	 */
+	public function add($entity, $relations = NULL) {
+		return $this->dao->add($entity, $relations);
+	}
+
+	public function save($entity, $relations = NULL) {
+		$this->em->persist($entity)->flush();
+	}
+
 	public function addExample() {
 		$school = new Entity\School();
 		$school->izo = "102320632";
@@ -39,7 +54,6 @@ class SchoolsFacade extends Nette\Object {
 		return $this->dao->findOneBy(['id' => $id]);
 	}
 
-
 	/**
 	 * @param array $criteria
 	 * @param array $orderBy
@@ -49,6 +63,17 @@ class SchoolsFacade extends Nette\Object {
 	 */
 	public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null) {
 		return $this->dao->findBy($criteria, $orderBy, $limit, $offset);
+	}
+
+	/**
+	 * @param array $criteria
+	 * @param array $orderBy
+	 * @return mixed|null|object
+	 *
+	 * @Secure\Read(allow="guest")
+	 */
+	public function findOneBy(array $criteria, array $orderBy = null) {
+		return $this->dao->findOneBy($criteria, $orderBy);
 	}
 
 	/**

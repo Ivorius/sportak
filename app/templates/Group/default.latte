@@ -1,11 +1,27 @@
 {block content}
+<h1 n:block="title">Třídy {$school->name}</h1>
 
-Zúčastněné školy:
-
-
-{foreach $schools as $school}
-
-   {$school->izo}: {$school->name}<br>
-
-{/foreach}
+<div class="col-md-6">
+	<h2>Přehled tříd</h2>
+{if $groups}
+	<table class="table table-striped">
+		<tr>
+			<th>Název třídy</th>
+			<th>Ročník</th>
+			<th></th>
+		</tr>
+		<tr n:foreach="$groups AS $group">
+			<td><a n:href="this id=>$group->id" title="Editovat">{$group->name}</a></td>
+			<td>{$group->grade->name}</td>
+			<td><a n:href="delete! $group->id">Smazat</a></td>
+		</tr>
+	</table>
+{else}
+	<p>Ke škole není přiřazena žádná třída</p>
+{/if}
+</div>
+<div class="col-md-6">
+	<h2>{if $group}Editace třídy {$group->name} {else}Přidání třídy{/if}</h2>
+	{control editGroup}
+</div>
 {/block}

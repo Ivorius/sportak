@@ -4,7 +4,9 @@
 		"nette/nette": "~2.3.0",
 		"dg/adminer-custom": "~1.5",
 		"kdyby/doctrine": "~2.3",
-		"majkl578/nette-identity-doctrine": "~2.1"
+		"majkl578/nette-identity-doctrine": "~2.1",
+		"nextras/forms": "1.4.*@dev",
+		"nextras/datagrid": "~2.1"
 	},
 	"require-dev": {
 		"nette/tester": "~1.0",

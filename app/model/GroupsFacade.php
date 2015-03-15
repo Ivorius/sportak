@@ -16,7 +16,22 @@ class GroupsFacade extends Nette\Object {
 
 	public function __construct(\Kdyby\Doctrine\EntityManager $em) {
 		$this->em = $em;
-		$this->dao = $em->getRepository(Entity\School::getClassName());
+		$this->dao = $em->getRepository(Entity\Group::getClassName());
+	}
+
+	/**
+	 * 
+	 * @param object|array|\Traversable $entity
+	 * @param object|array|\Traversable $relations
+	 * @throws InvalidArgumentException
+	 * @return array
+	 */
+	public function add($entity, $relations = NULL) {
+		return $this->dao->add($entity, $relations);
+	}
+
+	public function save($entity, $relations = NULL) {
+		$this->em->persist($entity)->flush();
 	}
 
 	public function findAll() {

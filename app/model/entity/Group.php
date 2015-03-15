@@ -3,9 +3,11 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
+ * @ORM\Table(name="`group`")
  */
 class Group extends \Kdyby\Doctrine\Entities\BaseEntity {
 
@@ -24,7 +26,6 @@ class Group extends \Kdyby\Doctrine\Entities\BaseEntity {
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="Grade", inversedBy="groups")
-	 * @Assert\Valid()
 	 */
 	protected $grade;
 
