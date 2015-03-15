@@ -30,11 +30,13 @@ services:
 	- App\SchoolsFacade
 	- App\GroupsFacade
 	- App\UsersFacade
+	- App\StudentsFacade
 
 	- App\Components\ISignInControlFactory
 	- App\Components\IEditSchoolControlFactory
 	- App\Components\IEditGroupControlFactory
 	- App\Components\IEditUserControlFactory
+	- App\Components\IEditStudentControlFactory
 	- 
 		implement: App\Forms\IEntityFormFactory
 		inject: yes
@@ -55,4 +57,4 @@ doctrine:
 	password: '***'
 	dbname: sportak
 	metadata:
-		App: %appDir%
+		App: %appDir%/model

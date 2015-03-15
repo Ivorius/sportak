@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity
@@ -12,7 +13,7 @@ class Sport extends \Kdyby\Doctrine\Entities\BaseEntity {
 	/**
 	 * @ORM\Id
 	 * @ORM\Column(type="integer")
-	 * @ORM\GeneratedValue
+	 * @ORM\GeneratedValue()
 	 */
 	protected $id;
 
@@ -38,5 +39,13 @@ class Sport extends \Kdyby\Doctrine\Entities\BaseEntity {
 	 */
 	protected $results;
 	
+	/**
+	 * @ORM\Column(type="boolean")
+	 */
+	protected $is_global;
+
 	
+	public function __construct() {
+		$this->results = new ArrayCollection();
+	}
 }

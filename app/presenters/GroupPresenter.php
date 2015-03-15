@@ -29,6 +29,9 @@ class GroupPresenter extends BasePresenter {
 	 */
 	public $em;
 	
+	/**
+	 * @var App\Entity\Group
+	 */
 	protected $group;
 
 	public function actionDefault($id = NULL) {
@@ -45,7 +48,7 @@ class GroupPresenter extends BasePresenter {
 		};
 		
 	}
-
+	
 	public function handleDelete($id) {
 		$deleteEntity = $this->groups->findOneBy(["id" => $id, "school" => $this->school]);
 		if($deleteEntity) {

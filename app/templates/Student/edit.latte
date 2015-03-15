@@ -1,0 +1,6 @@
+{* Latte template *}
+
+{block content}
+
+<h1 n:block="title">{if $student->firstname}Editace žáka {$student->name}{else}Přidání žáka{/if}</h1>
+{control editStudent}

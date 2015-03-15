@@ -48,6 +48,7 @@ a {
   -moz-transition: 300ms;
   -o-transition: 300ms;
   transition: 300ms;
+  text-decoration:underline;
 }
 hr {
   border-top: 1px solid #e5e5e5;
@@ -939,6 +940,7 @@ ul.faq li > div h3 {
 
 aside#services {}
 nav.topik.navbar {padding:40Px 0 20px; background: url(../images/header_bot.png) 0 100% repeat-x;}
+nav.topik.navbar a {text-decoration: none;}
 .navbar-brand {height:auto;}
 div.navbar-inverse {color: #fff;}
 nav.navbar-default {background:#fff; border-bottom:0;}

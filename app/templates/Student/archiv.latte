@@ -1,0 +1,25 @@
+{* Latte template *}
+
+{block content}
+<h1 n:block="title">Archiv žáků</h1>
+<p> <a n:href="Student:">Seznam aktivních žáků</a></p>
+{if $students}
+	<table class="table">
+		<tr>
+			<th>Jméno a příjmení</th>
+			<th>Pohlaví</th>
+			<th>Ročník</th>
+			<th></th>
+		</tr>
+		<tr n:foreach="$students AS $student">
+			<td><a n:href="Student:edit $student->id">{$student->name}</a></td>
+			<td>{$student->is_male ? "muž" : "žena"}</td>
+			<td>{$student->birth|date:'%d. %m. %Y'}</td>
+			<td><a n:href="delete! student=>$student->id" title="Pozor, smaže žáka a všechny jeho výsledky!">smazat</a> 
+				| <a n:href="live! student=>$student->id" title="Vrátí zpět z archivu">zpět z archivu</a></td>
+		</tr>
+
+	</table>
+{else}
+	<p>V archivu zatím nejsou žádní žáci.</p>
+{/if}

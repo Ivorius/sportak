@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -26,6 +27,7 @@ class Group extends \Kdyby\Doctrine\Entities\BaseEntity {
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="Grade", inversedBy="groups")
+	 * @Assert\NotBlank()
 	 */
 	protected $grade;
 
@@ -34,5 +36,14 @@ class Group extends \Kdyby\Doctrine\Entities\BaseEntity {
 	 * @Assert\Valid()
 	 */
 	protected $school;
+	
+	/**
+	 * @ORM\OneToMany(targetEntity="Student", mappedBy="group")
+	 */
+	protected $students;
+	
+	public function __construct() {
+		$this->students = new ArrayCollection();
+	}
 
 }

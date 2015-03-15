@@ -1,0 +1,24 @@
+{* Latte template *}
+
+{block content}
+<h1 n:block="title">Seznam žáků {if $group}- {$group->name}{/if}</h1>
+{if $students}
+	<p> <a n:href="Student:edit">Přidat nového žáka</a> | <a n:href="Student:archiv">Archiv žáků</a></p>
+	<table class="table">
+		<tr>
+			<th>Jméno a příjmení</th>
+			<th>Pohlaví</th>
+			<th>Třída</th>
+			<th></th>
+		</tr>
+		<tr n:foreach="$students AS $student">
+			<td><a n:href="Student:edit $student->id">{$student->name}</a></td>
+			<td>{$student->is_male ? "muž" : "žena"}</td>
+			<td>{$student->group->name}</td>
+			<td><a n:href="archive! student=>$student->id" title="přesune žáka do archivu, ale jeho výsledky se budou započítávat do TOP výsledků školy">archivovat</a></td>
+		</tr>
+
+	</table>
+{else}
+	<p>Zatím zde nemáte zařazeno žádné žáky. Zkuste si <a n:href="Student:edit">přidat nového žáka</a>, uvidíte že to je jednoduché.</p>
+{/if}

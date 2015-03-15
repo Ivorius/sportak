@@ -17,8 +17,8 @@ class Result extends \Kdyby\Doctrine\Entities\BaseEntity {
 
 	/**
 	 * @ORM\Id
-	 * @ORM\Column(type="integer", columnDefinition="BIGINT")
-	 * @ORM\GeneratedValue
+	 * @ORM\Column(type="integer")
+	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	protected $id;
 

@@ -32,8 +32,8 @@ class DateTimeInput extends Nette\Forms\Controls\BaseControl {
 	public function getControl() {
 		$control = Nette\Utils\Html::el('input', [
 					'type' => 'datetime-local',
-					'name' => $this->getHttpName(),
-					'value' => $this->date !== NULL ? $this->date->format('Y-m-d\TH:i') : NULL,
+					'name' => $this->getHtmlName(),
+					'value' => $this->date !== NULL ? $this->date->format('d.m.Y') : NULL,
 					'disabled' => $this->isDisabled(),
 		]);
 

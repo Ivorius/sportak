@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -31,4 +32,9 @@ class Grade extends \Kdyby\Doctrine\Entities\BaseEntity {
 	 * @ORM\OneToMany(targetEntity="Result", mappedBy="grade")
 	 */
 	protected $results;
+	
+	public function __construct() {
+		$this->groups = new ArrayCollection();
+		$this->results = new ArrayCollection();
+	}
 }
