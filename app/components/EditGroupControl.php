@@ -16,13 +16,13 @@ class EditGroupControl extends Nette\Application\UI\Control {
 	private $em;
 	private $formFactory;
 	private $group;
-	private $userIdentity;
+	private $school;
 
-	public function __construct(App\Entity\Group $group, Kdyby\Doctrine\EntityManager $em, App\Forms\IEntityFormFactory $formFactory, Nette\Security\User $user) {
+	public function __construct(App\Entity\Group $group, App\Entity\School $school, Kdyby\Doctrine\EntityManager $em, App\Forms\IEntityFormFactory $formFactory) {
 		$this->group = $group;
 		$this->em = $em;
 		$this->formFactory = $formFactory;
-		$this->userIdentity = $user->identity;
+		$this->school = $school;
 	}
 
 	protected function createComponentForm() {
@@ -39,7 +39,7 @@ class EditGroupControl extends Nette\Application\UI\Control {
 		
 		$form->onSuccess[] = function (App\Forms\EntityForm $form) {
 			$group = $form->getEntity();
-			$group->school = $this->userIdentity->school;
+			$group->school = $this->school;
 			$this->em->persist($group)->flush();
 			$this->onSave($group);
 		};
@@ -58,7 +58,8 @@ interface IEditGroupControlFactory {
 
 	/**
 	 * @param App\Entity\Group $group
+	 * @param App\Entity\School $school
 	 * @return EditGroupControl
 	 */
-	function create(App\Entity\Group $group);
+	function create(App\Entity\Group $group, App\Entity\School $school);
 }

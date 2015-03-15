@@ -29,28 +29,38 @@ class SchoolPresenter extends BasePresenter {
 	 */
 	public $controlFactory;
 	
+	/**
+	 * @var App/Entity/School
+	 */
 	protected $school;
+	
+	public function startup() {
+		parent::startup();
+		$this->school = $this->schools->findOneBy(["id" => $this->user->identity->school_id]);
+	}
 	
 
 	public function renderDefault() {
-		$this->template->school = $this->user->identity->school;
+		$this->template->school = $this->school;
 	}
 
 	public function actionEdit() {
-		$this->school = ($this->user->identity->school !== NULL) ? $this->user->identity->school : new App\Entity\School();
+		$this->school = ($this->school !== NULL) ? $this->school : new App\Entity\School();
 
 		$this['editSchool']->onSave[] = function (App\Entity\School $school) {
-			$this->user->identity->school = $school;
-			$this->users->add($this->user->identity);
+			$userEntity = $this->users->get($this->user->id);
+			$userEntity->school = $school;			
+			$this->users->add($userEntity);
 			$this->users->flush();
+			$this->user->identity->school_id = $school->id;
 			$this->flashMessage('Škola uložena.', 'success');
 			$this->redirect('this');
 		};
 	}
 	
 	public function renderEdit() {
-		$this->template->school = $this->user->identity->school;
-		$this->template->title =  $this->user->identity->school ? "Editovat školu" : "Přidat školu";
+		$this->template->school = $this->school;
+		$this->template->title =  $this->school ? "Editovat školu" : "Přidat školu";
 	}
 
 	protected function createComponentEditSchool() {
@@ -70,12 +80,12 @@ class SchoolPresenter extends BasePresenter {
 	
 	public function addUserFormSubmitted(Nette\Application\UI\Form $form) {
 		$values = $form->getValues();
-		$usr = $this->users->findOneBy(array('email' => $values->email, 'school' => null));
-		if($usr) {
-			$usr->school = $this->user->identity->school;
+		$userEntity = $this->users->findOneBy(array('email' => $values->email, 'school' => null));
+		if($userEntity) {
+			$userEntity->school = $this->school;
 			
 			try {
-				$this->users->save($usr);
+				$this->users->save($userEntity);
 				$this->flashMessage("Učitel byl spárován se školou");								
 			} catch (\Exception $e) {
 				$this->flashMessage("Nastala neočekávaná chyba. Omlouváme se.");

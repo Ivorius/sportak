@@ -38,7 +38,13 @@ class Authenticator extends Nette\Object implements Nette\Security\IAuthenticato
 			$user->password = $password; // Passwords::hash($password); -> in entity User
 			$this->users->save($user);
 		} else {
-			return $user;
+			$myUser = Nette\Utils\ArrayHash::from(array(
+				"firstname" => $user->firstname,
+				"name" => $user->firstname . " " . $user->lastname,
+				"email" => $user->email,
+				"school_id" => $user->school->id
+			));
+			return new Nette\Security\Identity($user->getId(), $user->role, $myUser);
 		}
 	}
 

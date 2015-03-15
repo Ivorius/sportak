@@ -59,6 +59,16 @@ class GroupsFacade extends Nette\Object {
 	}
 
 	/**
+	 * @param array $criteria
+	 * @param array $orderBy
+	 * @return mixed|null|object
+	 *
+	 */
+	public function findOneBy(array $criteria, array $orderBy = null) {
+		return $this->dao->findOneBy($criteria, $orderBy);
+	}
+
+	/**
 	 * @param $entity
 	 * @param null $relations
 	 * @param bool $flush

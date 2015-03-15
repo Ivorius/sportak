@@ -70,7 +70,6 @@ class SchoolsFacade extends Nette\Object {
 	 * @param array $orderBy
 	 * @return mixed|null|object
 	 *
-	 * @Secure\Read(allow="guest")
 	 */
 	public function findOneBy(array $criteria, array $orderBy = null) {
 		return $this->dao->findOneBy($criteria, $orderBy);
