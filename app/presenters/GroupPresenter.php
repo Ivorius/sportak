@@ -49,15 +49,19 @@ class GroupPresenter extends BasePresenter {
 		
 	}
 	
-	public function handleDelete($id) {
-		$deleteEntity = $this->groups->findOneBy(["id" => $id, "school" => $this->school]);
+	public function handleDelete($group) {
+		$deleteEntity = $this->groups->findOneBy(["id" => $group, "school" => $this->school]);
 		if($deleteEntity) {
+			try {
 			 $this->groups->delete($deleteEntity);
 			 $this->flashMessage("Třída " . $deleteEntity->name . " byla smazána.", "info");
+			} catch(\Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException $e) {
+				$this->flashMessage("Na tuto třídu jsou navázány další záznamy - žáci. Nelze jí odstranit.");
+			}
 		} else {
 			$this->flashMessage("Tuto třídu nemáte právo editovat", "error");
 		}
-		$this->redirect('Group:');
+		$this->redirect('this');
 	}
 
 	protected function createComponentEditGroup() {
