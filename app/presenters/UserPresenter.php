@@ -7,7 +7,7 @@ use Kdyby;
 use Nette;
 
 /**
- * User presenter.
+ * @Secured
  */
 class UserPresenter extends BasePresenter {
 	

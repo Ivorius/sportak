@@ -3,6 +3,9 @@
 namespace App\Presenters;
 use App;
 
+/**
+ * @Secured
+ */
 class SportPresenter extends BasePresenter {
 
 	use NeedSchool;
