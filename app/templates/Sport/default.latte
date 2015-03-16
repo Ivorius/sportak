@@ -17,7 +17,7 @@
 			<td>{$sport->unit}</td>
 			<td>{$sport->bigger_is_better ? "ano" : "ne"}</td>
 			<td>{$sport->is_global ? "globální" : "lokální"}</td>
-			<td><a n:if="$sport->is_global === FALSE" href="!delete $sport->id">Smazat</a></td>
+			<td><a n:if="$sport->is_global === FALSE" n:href="delete! sport=>$sport->id">Smazat</a></td>
 		</tr>
 
 	</table>
