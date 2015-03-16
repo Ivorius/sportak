@@ -31,12 +31,14 @@ services:
 	- App\GroupsFacade
 	- App\UsersFacade
 	- App\StudentsFacade
+	- App\SportsFacade
 
 	- App\Components\ISignInControlFactory
 	- App\Components\IEditSchoolControlFactory
 	- App\Components\IEditGroupControlFactory
 	- App\Components\IEditUserControlFactory
 	- App\Components\IEditStudentControlFactory
+	- App\Components\IEditSportControlFactory
 	- 
 		implement: App\Forms\IEntityFormFactory
 		inject: yes

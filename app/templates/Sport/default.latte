@@ -1,24 +1,26 @@
 {* Latte template *}
 
 {block content}
-<h1 n:block="title">Seznam žáků</h1>
-{if $students}
-	<p> <a n:href="Student:edit">Přidat nového žáka</a></p>
+<h1 n:block="title">Seznam sportů</h1>
+{if $sports}
+	<p> <a n:href="Sport:edit">Přidat nový sport</a></p>
 	<table class="table">
 		<tr>
-			<th>Jméno a příjmení</th>
-			<th>Pohlaví</th>
-			<th>Třída</th>
+			<th>Název</th>
+			<th>Jednotka měření</th>
+			<th>Od největšího</th>
+			<th><abbr title="Globální jsou sporty, které jsou předdefinovány pro všechny školy správcem. Lokální sporty jste si přidali sami. Můžete je upravovat a měnit. ">Druh</abbr></th>
 			<th></th>
 		</tr>
-		<tr n:foreach="$students AS $student">
-			<td>{$student->firstname} {$student->lastname}</td>
-			<td>{$student->is_male ? "muž" : "žena"}</td>
-			<td>{$student->group->name}</td>
-			<td></td>
+		<tr n:foreach="$sports AS $sport">
+			<td><a n:tag-if="$sport->is_global === FALSE" n:href="Sport:edit $sport->id">{$sport->name}</a></td>
+			<td>{$sport->unit}</td>
+			<td>{$sport->bigger_is_better ? "ano" : "ne"}</td>
+			<td>{$sport->is_global ? "globální" : "lokální"}</td>
+			<td><a n:if="$sport->is_global === FALSE" href="!delete $sport->id">Smazat</a></td>
 		</tr>
 
 	</table>
 {else}
-	<p>Zatím zde nemáte zařazeno žádné žáky. Zkuste si <a n:href="Student:edit">přidat nového žáka</a>, uvidíte že to je jednoduché.</p>
+	<p>Zatím zde nemáte žádný sport. Zkuste si <a n:href="Sport:edit">přidat nový</a>, uvidíte že to je jednoduché.</p>
 {/if}
