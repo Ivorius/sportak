@@ -33,15 +33,20 @@ class EditGroupControl extends Nette\Application\UI\Control {
 		$form->addSelect('grade', 'Ročník')
 				->setPrompt('(vyberte ročník)')
 				->setOption(Kdyby\DoctrineForms\IComponentMapper::ITEMS_TITLE, 'name');
-	
+
 
 		$form->addSubmit('save', 'Uložit');
-		
+
 		$form->onSuccess[] = function (App\Forms\EntityForm $form) {
-			$group = $form->getEntity();
-			$group->school = $this->school;
-			$this->em->persist($group)->flush();
-			$this->onSave($group);
+			try {
+				$group = $form->getEntity();
+				$group->school = $this->school;
+				$this->em->persist($group)->flush();
+				$this->onSave($group);
+			} catch (\Doctrine\DBAL\DBALException $e) {
+				\Tracy\Debugger::log($e);
+				$this->presenter->flashMessage("Nastala neočekávaná chyba, záznam nemohl být uložen.", "error");
+			}
 		};
 
 		$form->bindEntity($this->group);

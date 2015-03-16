@@ -46,7 +46,7 @@ class EditUserControl extends Nette\Application\UI\Control {
 				$this->onSave($user);
 			} catch (\Doctrine\DBAL\Exception\UniqueConstraintViolationException $e) {
 				$this->presenter->flashMessage("Tento email již je registrován. Přihlaste se prosím.", "info");
-			} catch (\Exception $e) {
+			} catch (\Doctrine\DBAL\DBALException $e) {
 				\Tracy\Debugger::log($e);
 				$this->presenter->flashMessage("Nastala neočekávaná chyba, učitel nemohl být uložen.", "error");
 			}

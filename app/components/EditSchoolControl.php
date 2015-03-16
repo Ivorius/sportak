@@ -49,7 +49,11 @@ class EditSchoolControl extends Nette\Application\UI\Control {
 					$this->presenter->flashMessage("Tato škola - IZO:" . $school->izo . " již je v naší evidenci. Požádejte jejího správce " . $usedSchool->users[0]->email . " o přiřazení vašeho účtu ke škole.");
 				} else {
 					$this->presenter->flashMessage("Tato škola - IZO:" . $school->izo . " již je v naší evidenci. Nemá však žádného správce, kontaktujte nás");
+					\Tracy\Debugger::log($e);
 				}
+			} catch (\Doctrine\DBAL\DBALException $e) {
+				\Tracy\Debugger::log($e);
+				$this->presenter->flashMessage("Nastala neočekávaná chyba, záznam nemohl být uložen.", "error");
 			}
 		};
 

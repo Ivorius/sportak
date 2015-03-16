@@ -38,17 +38,23 @@ class EditStudentControl extends Nette\Application\UI\Control {
 				->setOption(Kdyby\DoctrineForms\IComponentMapper::ITEMS_FILTER, ['school' => $this->school]);
 		
 		$form->addComponent(new App\Forms\Controls\DateTimeInput('Narozen'), 'birth');
-		//$form->addText('birth', 'Datum narození');
 		$form->addCheckbox('is_male', 'Muž');		
 		$form->addSubmit('save', 'Uložit');
 		$form->addSubmit('save_new', 'Uložit a přidat další');
 		
 		$form->onSuccess[] = function (App\Forms\EntityForm $form) {
-			$student = $form->getEntity();
-			$student->school = $this->school;
-			$student->hash = $student->generateHash();
-			$this->em->persist($student)->flush();
-			$this->onSave($student, $form);
+			try {
+				$student = $form->getEntity();
+				$student->school = $this->school;
+				$student->hash = $student->generateHash();
+				$this->em->persist($student)->flush();
+				$this->onSave($student, $form);
+			} catch (\Doctrine\DBAL\Exception\UniqueConstraintViolationException $e) {
+				$this->presenter->flashMessage("Tento email již je registrován. Přihlaste se prosím.", "info");
+			} catch (\Doctrine\DBAL\DBALException $e) {
+				\Tracy\Debugger::log($e);
+				$this->presenter->flashMessage("Nastala neočekávaná chyba, učitel nemohl být uložen.", "error");
+			}
 		};
 
 		$form->bindEntity($this->student);
