@@ -74,10 +74,13 @@ class SportsFacade extends Nette\Object {
 	}
 	
 	
-	public function findGlobalAndLocal(\App\Entity\School $school) {
+	public function findGlobalAndLocal(\App\Entity\School $school, $entityId = NULL) {
 		$qb = $this->dao->createQueryBuilder('s')
 				->where('s.is_global = TRUE')->orWhere('s.is_global = FALSE AND s.school = :school')->setParameter('school', $school->getId());
-		return new ResultSet($qb->getQuery());		
+		if($entityId !== NULL) {
+			$qb->andWhere('s.id = :id')->setParameter('id', $entityId);
+		}
+ 		return new ResultSet($qb->getQuery());		
 		
 	}
 
