@@ -53,7 +53,7 @@ class School extends \Kdyby\Doctrine\Entities\BaseEntity {
 	protected $postcode;
 
 	/**
-	 * @ORM\OneToMany(targetEntity="Group", mappedBy="school", cascade={"persist"})
+	 * @ORM\OneToMany(targetEntity="Group", mappedBy="school", cascade={"persist"}, indexBy="id")
 	 */
 	protected $groups;
 
