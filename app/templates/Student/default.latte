@@ -9,12 +9,14 @@
 			<th>Jméno a příjmení</th>
 			<th>Pohlaví</th>
 			<th>Třída</th>
+			<th>Výsledek</th>
 			<th></th>
 		</tr>
 		<tr n:foreach="$students AS $student">
 			<td><a n:href="Student:edit $student->id">{$student->name}</a></td>
 			<td>{$student->is_male ? "muž" : "žena"}</td>
 			<td>{$student->group->name}</td>
+			<td><a n:href="Result:student $student->id">Výsledky</a></td>
 			<td><a n:href="archive! student=>$student->id" title="přesune žáka do archivu, ale jeho výsledky se budou započítávat do TOP výsledků školy">archivovat</a></td>
 		</tr>
 

@@ -6,6 +6,7 @@ use App\Entity\Result;
 use App\Entity\School;
 use App\Entity\Group;
 use App\Entity\Sport;
+use App\Entity\Student;
 use Doctrine\ORM\Query\Expr\Join;
 use Kdyby;
 use Kdyby\Doctrine\QueryBuilder;
@@ -57,11 +58,32 @@ class ResultsQuery extends Kdyby\Doctrine\QueryObject {
 		return $this;
 	}
 	
+	public function byStudent(Student $student) {		
+		$this->filter[] = function (QueryBuilder $qb) use ($student) {
+			$qb->andWhere('r.student = :student', $student->getId());
+		};
+		return $this;
+	}
 	
+	public function notNull() {
+		$this->filter[] = function (QueryBuilder $qb) {
+			$qb->andWhere('r.value IS NOT NULL');
+		};
+		return $this;
+	}
 	
 	public function groupBy($column = "r.round") {
 		$this->filter[] = function(QueryBuilder $qb) use ($column) {
 			$qb->groupBy($column);
+		};
+		return $this;
+	}
+	
+	public function addOrder(array $arg) {
+		$this->filter[] = function(QueryBuilder $qb) use ($arg) {
+			foreach($arg AS $sort => $order) {
+				$qb->orderBy($sort, $order);
+			}			
 		};
 		return $this;
 	}
@@ -78,7 +100,7 @@ class ResultsQuery extends Kdyby\Doctrine\QueryObject {
 			$modifier($qb);
 		}
 
-		return $qb->addOrderBy('ro.created', 'DESC');
+		return $qb;
 	}
 
 	protected function doCreateCountQuery(Queryable $repository) {

@@ -28,6 +28,11 @@ class ResultPresenter extends BasePresenter {
 	protected $round;
 
 	/**
+	 * @var App\Entity\Student
+	 */
+	protected $student;
+
+	/**
 	 * @inject
 	 * @var \App\ResultsFacade
 	 */
@@ -76,12 +81,13 @@ class ResultPresenter extends BasePresenter {
 			if ($sport instanceof \App\Entity\Sport && $group instanceof \App\Entity\Group) {
 				$this->group = $this->template->group = $group;
 				$this->sport = $this->template->sport = $sport;
-				
+
 				$query = (new ResultsQuery())
 						->byGroup($group)
 						->bySport($sport)
+						->addOrder(['ro.created', 'DESC'])
 						->groupBy();
-				
+
 				$this->template->listResults = $resultsList = $this->results->fetch($query);
 				$this->template->resultsCount = count($resultsList);
 
@@ -104,7 +110,7 @@ class ResultPresenter extends BasePresenter {
 		if (!is_numeric($id))
 			throw new \Kdyby\Doctrine\InvalidArgumentException;
 
-		$this->round  = $round = $this->results->findOneRound(["id" => $id, "school" => $this->school]);
+		$this->round = $round = $this->results->findOneRound(["id" => $id, "school" => $this->school]);
 
 		if ($round instanceof App\Entity\Round) {
 			$this->group = $group = $round->group;
@@ -115,7 +121,7 @@ class ResultPresenter extends BasePresenter {
 			$this->template->sport = $sport;
 
 			$this['editForm']->setResults($round->results);
-			
+
 			foreach ($round->results AS $res) {
 				$defaults[$res->student->id] = $res->value;
 			}
@@ -130,12 +136,33 @@ class ResultPresenter extends BasePresenter {
 			$this->flashMessage('Bohužel, požadované záznamy nebyly nalezeny.', 'error');
 		}
 	}
-	
+
+	public function actionStudent($id) {
+		$this->student = $this->students->findOneBy(["school" => $this->school, "id" => $id]);
+		if(!$this->student instanceof \App\Entity\Student) {
+			throw new \Nette\InvalidArgumentException;
+		}
+		$resultsQuery =  (new ResultsQuery())
+				->byStudent($this->student)
+				->notNull()
+				->addOrder(["ro.sport" => "ASC", "ro.created" => "ASC"]);
+		$resultas = $this->results->fetch($resultsQuery);
+		$sportas = $sportResults = array();
+		foreach($resultas AS $res) {
+			$sportas[$res->round->sport->id] = $res->round;
+			$sportResults[$res->round->sport->id][] = $res;
+		}
+		
+		$this->template->sportas = $sportas;
+		$this->template->sportResults = $sportResults;
+		$this->template->student = $this->student;
+	}
+
 	public function handleDeleteRound($round) {
 		$entity = $this->results->findOneRound(["id" => $round, "school" => $this->school]);
 		if($entity) {
-			 $this->results->deleteRound($entity);
-			 $this->flashMessage("Výsledky byly nenávratně smazány", "info");
+			$this->results->deleteRound($entity);
+			$this->flashMessage("Výsledky byly nenávratně smazány", "info");
 		} else {
 			$this->flashMessage("Toto nemáte právo editovat", "error");
 		}
