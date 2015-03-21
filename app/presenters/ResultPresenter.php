@@ -87,6 +87,7 @@ class ResultPresenter extends BasePresenter {
 
 				$this->round = new App\Entity\Round;
 				$this['editForm']->setStudents($this->group->students);
+				$this['editForm-form-created']->setDefaultValue($this->round->created);
 
 				$this['editForm']->onSave[] = function (\Nette\Application\UI\Form $form) {
 					$this->flashMessage('Nové výsledky uloženy', 'success');
@@ -119,6 +120,7 @@ class ResultPresenter extends BasePresenter {
 				$defaults[$res->student->id] = $res->value;
 			}
 			$this['editForm-form-results']->setDefaults($defaults);
+			$this['editForm-form-created']->setDefaultValue($round->created);
 
 			$this['editForm']->onSave[] = function (\Nette\Application\UI\Form $form) use ($sport, $group) {
 				$this->flashMessage('Výsledky byly uloženy', 'success');

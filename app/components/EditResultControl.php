@@ -55,6 +55,7 @@ class EditResultControl extends UI\Control {
 						->addRule(UI\Form::FLOAT, 'Zadejte číselnou hodnotu');
 			}
 		}
+		$form->addComponent(new App\Forms\Controls\DateTimeInput('Datum záznamu'), 'created');
 		$form->addSubmit('send', 'Uložit');
 
 
@@ -77,6 +78,7 @@ class EditResultControl extends UI\Control {
 			$this->round->school = $student->school;
 			$this->round->group = $student->group;			
 			$this->round->grade = $student->group->grade;
+			$this->round->created = $values->created;
 			$this->resultsFacade->saveRound($this->round);
 			
 			
@@ -93,6 +95,8 @@ class EditResultControl extends UI\Control {
 			foreach ($this->results AS $ent) {
 				$ent->value = $values->results[$ent->student->id];
 			}
+			$this->round->created = $values->created;
+			$this->resultsFacade->saveRound($this->round);
 		}
 
 		$this->resultsFacade->flush();
