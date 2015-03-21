@@ -40,6 +40,14 @@ class ResultsQuery extends Kdyby\Doctrine\QueryObject {
 		return $this;
 	}
 	
+	public function inGroups(array $groups) {
+		dd($groups);
+		$this->filter[] = function (QueryBuilder $qb) use ($groups) {
+			$qb->andWhere('ro.group IN (:groups)', $groups);
+		};
+		return $this;
+	}
+	
 	public function bySport(Sport $sport = NULL) {
 		$this->filter[] = function (QueryBuilder $qb) use ($sport) {
 			$qb->andWhere('ro.sport = :sport', $sport->getId());
@@ -72,6 +80,13 @@ class ResultsQuery extends Kdyby\Doctrine\QueryObject {
 		return $this;
 	}
 	
+	public function activeStudent($active = TRUE) {
+		$this->filter[] = function (QueryBuilder $qb) use ($active) {
+			$qb->andWhere('st.archived = :archived', !$active);
+		};
+		return $this;
+	}
+	
 	public function groupBy($column = "r.round") {
 		$this->filter[] = function(QueryBuilder $qb) use ($column) {
 			$qb->groupBy($column);
@@ -82,7 +97,7 @@ class ResultsQuery extends Kdyby\Doctrine\QueryObject {
 	public function addOrder(array $arg) {
 		$this->filter[] = function(QueryBuilder $qb) use ($arg) {
 			foreach($arg AS $sort => $order) {
-				$qb->orderBy($sort, $order);
+				$qb->addOrderBy($sort, $order);
 			}			
 		};
 		return $this;

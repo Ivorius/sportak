@@ -14,7 +14,7 @@
 		<tr n:foreach="$groups AS $gr">
 			<td><a n:href="this id=>$gr->id" title="Editovat">{$gr->name}</a></td>
 			<td>{$gr->grade->name}</td>
-			<td><a n:href="Student:default group_id=>$gr->id">přehled</a> | <a n:href="Student:edit group_id=>$gr->id">přidat</a></td>
+			<td><a n:href="Result:group, $gr->id">výsledky</a> | <a n:href="Student:default group_id=>$gr->id">přehled</a> | <a n:href="Student:edit group_id=>$gr->id">přidat</a></td>
 			<td><a n:href="delete! group=>$gr->id">Smazat</a></td>
 		</tr>
 	</table>

@@ -1,0 +1,49 @@
+{* Latte template *}
+{block scripts}
+	 {include #parent}
+		 <script src="{$basePath}/js/highcharts-custom.js" type="text/javascript"></script>
+{/block}
+		
+{block content}
+
+<h1 n:block="title">Výsledky žáků ze třídy {$group->name}</h1>
+
+{foreach $sportas AS $round}
+	<div id="graph-{$round->sport->id}"></div>
+	<script>
+	$(function () {
+		$('#graph-{$round->sport->id}').highcharts({
+			chart: {
+				type: 'line'
+			},
+			title: {
+				text: {$round->sport->name}
+			},
+			xAxis: {
+				categories: [{foreach $sportResults[$round->sport->id] AS $studentResult}{first}{foreach $studentResult AS $result}{$result->round->created|date:'d.m.Y'} {sep},{/sep}{/foreach}{/first}{/foreach}]
+						
+			},
+			yAxis: {
+				title: {
+					text: {$round->sport->name} + ' (' + {$round->sport->unit} + ')'
+				}
+			},
+			tooltip: {
+				valueSuffix: {$round->sport->unit}
+			},
+			plotOptions: {
+				line: {
+					dataLabels: {
+						//enabled: true
+					},
+					enableMouseTracking: true
+				}
+			},
+			series: [{foreach $sportResults[$round->sport->id] AS $studentResult}{
+				name: {$studentResult[0]->student->name},
+				data: [{foreach $studentResult AS $result}{$result->value} {sep},{/sep}{/foreach}]
+			}{sep},{/sep}{/foreach}]
+		});
+	});
+	</script>
+{/foreach}

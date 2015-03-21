@@ -85,7 +85,7 @@ class ResultPresenter extends BasePresenter {
 				$query = (new ResultsQuery())
 						->byGroup($group)
 						->bySport($sport)
-						->addOrder(['ro.created', 'DESC'])
+						->addOrder(['ro.created' => 'DESC'])
 						->groupBy();
 
 				$this->template->listResults = $resultsList = $this->results->fetch($query);
@@ -156,6 +156,30 @@ class ResultPresenter extends BasePresenter {
 		$this->template->sportas = $sportas;
 		$this->template->sportResults = $sportResults;
 		$this->template->student = $this->student;
+	}
+	
+	
+	public function actionGroup($id) {
+		$this->group = $this->groups->findOneBy(["school" => $this->school, "id" => $id]);
+		if(!$this->group instanceof \App\Entity\Group)
+			throw new \Nette\InvalidArgumentException;
+
+		$resultsQuery = (new ResultsQuery())
+				->byGroup($this->group)
+				->activeStudent()
+				->addOrder(["ro.sport" => "ASC", "ro.created" => "ASC"]);
+
+		$resultas = $this->results->fetch($resultsQuery);
+		$sportas = $sportResults = array();
+		foreach ($resultas AS $res) {
+			$sportas[$res->round->sport->id] = $res->round;
+			$sportResults[$res->round->sport->id][$res->student->id][] = $res;
+		}
+		
+		$this->template->sportas = $sportas;
+		$this->template->sportResults = $sportResults;
+		$this->template->group = $this->group;
+	
 	}
 
 	public function handleDeleteRound($round) {
