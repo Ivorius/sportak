@@ -34,10 +34,19 @@ class StudentPresenter extends BasePresenter {
 	 */
 	public $groups;
 	
-	public function actionDefault($group_id = NULL) {
-		$students = $group_id === NULL 
-				? $this->students->findBy(["school" => $this->school, "archived" => 0], ["group" => "ASC"])
-				: $this->students->findBy(["school" => $this->school, "archived" => 0, "group" => $group_id]);
+	/**
+	 * @inject
+	 * @var \App\Components\IFindStudentControlFactory
+	 */
+	public $findStudentFactory;
+	
+	public function actionDefault($group_id = NULL, $firstname=NULL, $lastname=NULL) {
+		$arg = array("school" => $this->school, "archived" => 0);
+		if($group_id) $arg["group"] = $group_id;
+		if($firstname) $arg["firstname"] = $firstname;
+		if($lastname) $arg["lastname"] = $lastname;
+		
+		$students = $this->students->findBy($arg, ["group" => "ASC"]);
 		$this->template->students = $students;
 		$this->template->group = $group_id  ? $this->groups->findOneBy(["id" => $group_id]) : NULL;
 	}
@@ -65,6 +74,10 @@ class StudentPresenter extends BasePresenter {
 		if(!$id && $group_id) {
 			$this['editStudent-form-group']->setDefaultValue($group_id);
 		}
+	}
+	
+	public function actionFind() {
+		
 	}
 	
 	public function handleArchive($student) {
@@ -105,6 +118,10 @@ class StudentPresenter extends BasePresenter {
 	
 	protected function createComponentEditStudent() {
 		return $this->controlFactory->create($this->student, $this->school);
+	}
+	
+	protected function createComponentFindStudentForm() {
+		return $this->findStudentFactory->create($this->school);
 	}
 
 }
