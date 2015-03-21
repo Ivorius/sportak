@@ -42,8 +42,14 @@ class Group extends \Kdyby\Doctrine\Entities\BaseEntity {
 	 */
 	protected $students;
 	
+	/**
+	 * @ORM\OneToMany(targetEntity="Result", mappedBy="group")
+	 */
+	protected $results;
+	
 	public function __construct() {
 		$this->students = new ArrayCollection();
+		$this->results = new ArrayCollection();
 	}
 
 }

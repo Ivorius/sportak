@@ -1,0 +1,8 @@
+{* Latte template *}
+{block content}
+
+<h1 n:block="title">Editace výsledků {$group->name} - {$sport->name|lower} dne {$round->created|date:'d.m.Y'}</h1>
+
+{ifset $sport}
+	{control editForm}
+{/ifset}

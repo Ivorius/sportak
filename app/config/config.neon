@@ -32,6 +32,7 @@ services:
 	- App\UsersFacade
 	- App\StudentsFacade
 	- App\SportsFacade
+	- App\ResultsFacade
 
 	- App\Components\ISignInControlFactory
 	- App\Components\IEditSchoolControlFactory
@@ -39,6 +40,8 @@ services:
 	- App\Components\IEditUserControlFactory
 	- App\Components\IEditStudentControlFactory
 	- App\Components\IEditSportControlFactory
+	- App\Components\IEditResultControlFactory
+	- App\Components\IResultControlFormFactory
 	- 
 		implement: App\Forms\IEntityFormFactory
 		inject: yes

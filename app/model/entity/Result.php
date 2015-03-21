@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -23,14 +25,9 @@ class Result extends \Kdyby\Doctrine\Entities\BaseEntity {
 	protected $id;
 
 	/**
-	 * @ORM\Column(type="date")
+	 * @ORM\Column(type="float", nullable=true)
 	 */
-	protected $created;
-
-	/**
-	 * @ORM\Column(type="float")
-	 */
-	protected $value;
+	protected $value = null;
 
 	/**
 	 *  @ORM\ManyToOne(targetEntity="Student", inversedBy="results")
@@ -38,18 +35,12 @@ class Result extends \Kdyby\Doctrine\Entities\BaseEntity {
 	protected $student;
 
 	/**
-	 *  @ORM\ManyToOne(targetEntity="Sport", inversedBy="results")
+	 *  @ORM\ManyToOne(targetEntity="Round", inversedBy="results")
 	 */
-	protected $sport;
-
-	/**
-	 * @ORM\ManyToOne(targetEntity="School", inversedBy="results")
-	 */
-	protected $school;
-
-	/**
-	 * @ORM\ManyToOne(targetEntity="Grade", inversedBy="results")
-	 */
-	protected $grade;
+	protected $round;
+	
+	public function setValue($value) {
+		return $this->value = $value !== "" ? $value : NULL;
+	}
 
 }

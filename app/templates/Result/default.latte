@@ -1,0 +1,26 @@
+{* Latte template *}
+
+{block content}
+
+<h1 n:block="title">Výsledky {ifset $sport}{$group->name} - {$sport->name|lower}{/ifset}</h1>
+
+{control selectForm}
+
+{ifset $sport}
+	
+	<div class="col-md-4 pull-right">
+	{if $resultsCount}
+	<h3>Přehled uložených výsledků</h3>
+	<ul n:foreach="$listResults as $result">
+		<li><a n:href="Result:edit, $result->round->id">{$result->round->created|date:"d.m.Y"}</a>
+			- <a n:href="deleteRound! round=>$result->round->id">smazat</a>
+		</li>
+	</ul>
+	{/if}
+	</div>
+	
+	<div class="col-md-8">
+	<h3>Zapsat nové výsledky</h3>
+	{control editForm}
+	</div>
+{/ifset}

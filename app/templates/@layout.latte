@@ -68,12 +68,12 @@
 								<li n:class="$presenter->isLinkCurrent('Result:*') ? active, dropdown">
 									<a n:href="Result:" class="dropdown-toggle" data-toggle="dropdown">Výsledky <i class="icon-angle-down"></i></a>
 									<ul class="dropdown-menu">
-										<li><a n:href="Result:edit">Zapsat výsledky</a></li>
-										<li><a href="#">Zobrazit výsledky žáka</a></li>
-										<li><a href="#">Zobrazit výsledky třídy</a></li>
-										<li><a href="#">TOP 10 z ročníku</a></li>
+										<li><a n:href="Result:">Zapsat výsledky</a></li>
+										<li><a n:href="Result:student">Zobrazit výsledky žáka</a></li>
+										<li><a n:href="Result:group">Zobrazit výsledky třídy</a></li>
+										<li><a n:href="Result:best">Nejlepší z ročníku</a></li>
 										<li class="divider"></li>
-										<li><a href="#">Nejlepší žáci školy</a></li>
+										<li><a n:href="Result:top">Nejlepší žáci školy</a></li>
 									</ul>
 								</li>
 							{else}
