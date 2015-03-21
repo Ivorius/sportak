@@ -11,7 +11,8 @@
 	"require-dev": {
 		"nette/tester": "~1.0",
 		"kdyby/validator": "@dev",
-		"kdyby/doctrine-forms": "@dev"
+		"kdyby/doctrine-forms": "@dev",
+		"kdyby/forms-replicator": "@dev"
 	},
 	"minimum-stability": "stable"
 }

@@ -53,6 +53,7 @@ extensions:
 	translation: Kdyby\Translation\DI\TranslationExtension
 	validator: Kdyby\Validator\DI\ValidatorExtension
 	doctrineForms: Kdyby\DoctrineForms\DI\FormsExtension
+	replicator: Kdyby\Replicator\DI\ReplicatorExtension
 
 doctrine:
 	user: test
