@@ -126,7 +126,9 @@ class ResultsQuery extends Kdyby\Doctrine\QueryObject {
 		$qb = $repository->createQueryBuilder()
 				->select('r')->from(Result::class, 'r')
 				->innerJoin('r.student', 'st')
-				->innerJoin('r.round', 'ro');
+				->innerJoin('r.round', 'ro')
+				->addSelect('st')
+				->addSelect('ro'); // This will produce less SQL queries with prefetch.
 
 		foreach ($this->filter as $modifier) {
 			$modifier($qb);
