@@ -9,13 +9,15 @@
 		<td>{$sport->name}</td>
 		<td>{if $resultas[$sport->id][male]}
 			{? $result = $resultas[$sport->id][male]}
-			{$result->student->name}: {$result->value}{$sport->unit}
+			<strong>{$result->student->name}: {$result->value}{$sport->unit}</strong><br>
+			datum: {$result->round->created|date:'d.m.Y'}
 		{/if}
 		</td>
 		<td>
 		{if $resultas[$sport->id][female]}
 			{? $result = $resultas[$sport->id][female]}
-			{$result->student->name}: {$result->value}{$sport->unit}
+			<strong>{$result->student->name}: {$result->value}{$sport->unit}</strong><br>
+			datum: {$result->round->created|date:'d.m.Y'}
 		{/if}
 		</td>
 		</tr>
