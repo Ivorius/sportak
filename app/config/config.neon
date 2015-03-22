@@ -43,6 +43,7 @@ services:
 	- App\Components\IEditResultControlFactory
 	- App\Components\IResultControlFormFactory
 	- App\Components\IFindStudentControlFactory
+	- App\Components\IAttachedSchoolControlFactory
 	- 
 		implement: App\Forms\IEntityFormFactory
 		inject: yes

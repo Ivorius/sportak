@@ -9,7 +9,13 @@ use Nette,
  * Base presenter for all application presenters.
  */
 abstract class BasePresenter extends Nette\Application\UI\Presenter {
-
+	
+	/**
+	 * @inject
+	 * @var \App\Components\IAttachedSchoolControlFactory $attachSchoolFactory
+	 */
+	public $attachSchoolFactory;
+	
 	/**
 	 * Kontrola oprávnění v anotacích
 	 * example: @ Secured @ Resource("User")
@@ -33,6 +39,10 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter {
 				}
 			}
 		}
+	}
+	
+	protected function createComponentAttachedSchools() {
+		return $this->attachSchoolFactory->create();
 	}
 
 }
