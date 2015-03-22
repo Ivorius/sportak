@@ -934,7 +934,7 @@ ul.faq li > div h3 {
 div.navbar.navbar-inverse, div.navbar.navbar-inverse a {color: #bdc3c7;}
 
 aside#services {}
-nav.topik.navbar {padding:40Px 0 20px; background: url(../images/header_bot.png) 0 100% repeat-x;}
+nav.topik.navbar {padding:40Px 0 20px; margin-bottom: 0; background: url(../images/header_bot.png) 0 100% repeat-x;}
 nav.topik.navbar a {text-decoration: none;}
 .navbar-brand {height:auto;}
 div.navbar-inverse {color: #fff;}
@@ -947,3 +947,5 @@ ul.menu {margin-top: 24px; font-size:1.3em;}
 }
 
 h1 {color:#027B02;}
+
+section#content {padding:20px 0 50px 0;}
