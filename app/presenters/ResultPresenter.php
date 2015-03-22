@@ -139,29 +139,28 @@ class ResultPresenter extends BasePresenter {
 
 	public function actionStudent($id) {
 		$this->student = $this->students->findOneBy(["school" => $this->school, "id" => $id]);
-		if(!$this->student instanceof \App\Entity\Student) {
+		if (!$this->student instanceof \App\Entity\Student) {
 			throw new \Nette\InvalidArgumentException;
 		}
-		$resultsQuery =  (new ResultsQuery())
+		$resultsQuery = (new ResultsQuery())
 				->byStudent($this->student)
 				->notNull()
 				->addOrder(["ro.sport" => "ASC", "ro.created" => "ASC"]);
 		$resultas = $this->results->fetch($resultsQuery);
 		$sportas = $sportResults = array();
-		foreach($resultas AS $res) {
+		foreach ($resultas AS $res) {
 			$sportas[$res->round->sport->id] = $res->round;
 			$sportResults[$res->round->sport->id][] = $res;
 		}
-		
+
 		$this->template->sportas = $sportas;
 		$this->template->sportResults = $sportResults;
 		$this->template->student = $this->student;
 	}
-	
-	
+
 	public function actionGroup($id) {
 		$this->group = $this->groups->findOneBy(["school" => $this->school, "id" => $id]);
-		if(!$this->group instanceof \App\Entity\Group)
+		if (!$this->group instanceof \App\Entity\Group)
 			throw new \Nette\InvalidArgumentException;
 
 		$resultsQuery = (new ResultsQuery())
@@ -175,7 +174,7 @@ class ResultPresenter extends BasePresenter {
 			$sportas[$res->round->sport->id] = $res->round;
 			$sportResults[$res->round->sport->id][$res->student->id][] = $res;
 		}
-		
+
 		$this->template->sportas = $sportas;
 		$this->template->sportResults = $sportResults;
 		$this->template->group = $this->group;
@@ -184,7 +183,7 @@ class ResultPresenter extends BasePresenter {
 
 	public function handleDeleteRound($round) {
 		$entity = $this->results->findOneRound(["id" => $round, "school" => $this->school]);
-		if($entity) {
+		if ($entity) {
 			$this->results->deleteRound($entity);
 			$this->flashMessage("Výsledky byly nenávratně smazány", "info");
 		} else {
