@@ -19,6 +19,25 @@ class ResultsFacade extends Nette\Object {
 		$this->em = $em;
 		$this->dao = $em->getRepository(Entity\Result::getClassName());
 	}
+	
+	public function findTopForSport(Entity\Sport $sport, $gender = "male", Entity\School $school = NULL) {
+		$qb = $this->dao->createQueryBuilder()
+				->select('r')->from(Entity\Result::class, 'r')
+				->innerJoin('r.student', 'st')
+				->innerJoin('r.round', 'ro')
+				->addSelect('st')
+				->addSelect('ro')
+				->where('ro.sport = :sport', $sport)
+				->andWhere('st.is_male = :male', $gender == "male" ? 1 : 0)
+				->andWhere('r.value IS NOT NULL')
+				->orderBy('r.value', $sport->bigger_is_better ? "DESC" : "ASC");
+		if($school instanceof Entity\School) {
+			$qb->andWhere('ro.school = :school', $school);
+		}
+		
+		return $query = $qb->getQuery();
+		
+	}
 
 	/**
 	 * 

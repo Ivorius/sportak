@@ -1,0 +1,23 @@
+{* Latte template *}
+
+{block content}
+<h1 n:block="title">Nejlepší žáci školy</h1>
+{ifset $resultas}
+	<table class="table table-hover">
+		<tr><th>název sportu</th><th>muži</th><th>ženy</th></tr>
+		<tr n:foreach="$sports AS $sport">
+		<td>{$sport->name}</td>
+		<td>{if $resultas[$sport->id][male]}
+			{? $result = $resultas[$sport->id][male]}
+			{$result->student->name}: {$result->value}{$sport->unit}
+		{/if}
+		</td>
+		<td>
+		{if $resultas[$sport->id][female]}
+			{? $result = $resultas[$sport->id][female]}
+			{$result->student->name}: {$result->value}{$sport->unit}
+		{/if}
+		</td>
+		</tr>
+	</table>
+{/ifset}

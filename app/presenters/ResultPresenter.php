@@ -197,6 +197,17 @@ class ResultPresenter extends BasePresenter {
 			$this->template->resultas = $resultas;
 		}
 	}
+	
+	public function actionTop() {
+			$resultas = array();
+			$sports = $this->sports->findGlobalAndLocal($this->school);
+			foreach ($sports AS $sport) {	
+				$resultas[$sport->id]["male"] = $this->results->findTopForSport($sport, "male", $this->school)->setMaxResults(1)->getOneOrNullResult();
+				$resultas[$sport->id]["female"] = $this->results->findTopForSport($sport, "female", $this->school)->setMaxResults(1)->getOneOrNullResult();
+			}
+			$this->template->sports = $sports;
+			$this->template->resultas = $resultas;
+	}
 
 	public function handleDeleteRound($round) {
 		$entity = $this->results->findOneRound(["id" => $round, "school" => $this->school]);
