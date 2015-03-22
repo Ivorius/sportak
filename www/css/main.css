@@ -93,7 +93,6 @@ body > section, body > aside {
 .amethyst,
 .wisteria,
 .clouds .silver,
-.green-pole,
 .midnight-blue,
 .concrete,
 .asbestos {
@@ -114,7 +113,6 @@ body > section, body > aside {
 .amethyst h1,
 .wisteria h1,
 .clouds .silver h1,
-.green-pole h1,
 .midnight-blue h1,
 .concrete h1,
 .asbestos h1,
@@ -133,7 +131,6 @@ body > section, body > aside {
 .amethyst h2,
 .wisteria h2,
 .clouds .silver h2,
-.green-pole h2,
 .midnight-blue h2,
 .concrete h2,
 .asbestos h2,
@@ -152,7 +149,6 @@ body > section, body > aside {
 .amethyst h3,
 .wisteria h3,
 .clouds .silver h3,
-.green-pole h3,
 .midnight-blue h3,
 .concrete h3,
 .asbestos h3,
@@ -171,7 +167,6 @@ body > section, body > aside {
 .amethyst h4,
 .wisteria h4,
 .clouds .silver h4,
-.green-pole h4,
 .midnight-blue h4,
 .concrete h4,
 .asbestos h4,
@@ -190,7 +185,6 @@ body > section, body > aside {
 .amethyst h5,
 .wisteria h5,
 .clouds .silver h5,
-.green-pole h5,
 .midnight-blue h5,
 .concrete h5,
 .asbestos h5,
@@ -209,7 +203,6 @@ body > section, body > aside {
 .amethyst h6,
 .wisteria h6,
 .clouds .silver h6,
-.green-pole h6,
 .midnight-blue h6,
 .concrete h6,
 .asbestos h6 {
@@ -243,7 +236,7 @@ body > section, body > aside {
   background-color: #16a085;
 }
 .green-pole {
-  background-color: #8CC63E;
+  background-color: #8CC63E; color:#1E1E1E;
 }
 .sun-flower {
   background-color: #f1c40f;
@@ -938,6 +931,8 @@ ul.faq li > div h3 {
   margin-bottom: 150px;
 }
 
+div.navbar.navbar-inverse, div.navbar.navbar-inverse a {color: #bdc3c7;}
+
 aside#services {}
 nav.topik.navbar {padding:40Px 0 20px; background: url(../images/header_bot.png) 0 100% repeat-x;}
 nav.topik.navbar a {text-decoration: none;}
@@ -951,4 +946,4 @@ ul.menu {margin-top: 24px; font-size:1.3em;}
 	color:#fff;
 }
 
-
+h1 {color:#027B02;}
