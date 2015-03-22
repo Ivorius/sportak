@@ -7,6 +7,7 @@ use App\Entity\School;
 use App\Entity\Group;
 use App\Entity\Sport;
 use App\Entity\Student;
+use App\Entity\Grade;
 use Doctrine\ORM\Query\Expr\Join;
 use Kdyby;
 use Kdyby\Doctrine\QueryBuilder;
@@ -39,71 +40,105 @@ class ResultsQuery extends Kdyby\Doctrine\QueryObject {
 		};
 		return $this;
 	}
-	
+
 	public function inGroups(array $groups) {
-		dd($groups);
 		$this->filter[] = function (QueryBuilder $qb) use ($groups) {
 			$qb->andWhere('ro.group IN (:groups)', $groups);
 		};
 		return $this;
 	}
-	
+
 	public function bySport(Sport $sport = NULL) {
 		$this->filter[] = function (QueryBuilder $qb) use ($sport) {
 			$qb->andWhere('ro.sport = :sport', $sport->getId());
 		};
 		return $this;
 	}
-	
+
 	public function byDate($date) {
-		if(!$date instanceof \DateTime) {
+		if (!$date instanceof \DateTime) {
 			$date = Nette\Utils\DateTime::from($date);
 		}
-		
+
 		$this->filter[] = function (QueryBuilder $qb) use ($date) {
 			$qb->andWhere('ro.created = :date', $date);
 		};
 		return $this;
 	}
-	
-	public function byStudent(Student $student) {		
+
+	public function byStudent(Student $student) {
 		$this->filter[] = function (QueryBuilder $qb) use ($student) {
 			$qb->andWhere('r.student = :student', $student->getId());
 		};
 		return $this;
 	}
-	
+
+	public function byGradeId($gradeId) {
+		$this->filter[] = function (QueryBuilder $qb) use ($gradeId) {
+			$qb->andWhere('ro.grade = :grade', $gradeId);
+		};
+		return $this;
+	}
+
+	public function byGender($gender) {
+		$this->filter[] = function (QueryBuilder $qb) use ($gender) {
+			$qb->andWhere('st.is_male = :gender', $gender == "male" ? 1 : 0);
+		};
+		return $this;
+	}
+
+	public function getBest($bigger, $sport, $groups = NULL) {
+		$this->select[] = function (QueryBuilder $qb) use ($bigger) {
+			if ($bigger) {
+				$qb->addSelect('max(r.value) AS orderValue');
+			} else {
+				$qb->addSelect('min(r.value) AS orderValue');
+			}
+		};
+
+		$this->bySport($sport);
+		$this->notNull();
+		$this->activeStudent();
+		$this->addOrder(["orderValue" => $bigger ? "DESC" : "ASC"]);
+		$this->groupBy("r.student");
+
+		if ($groups) {
+			$this->inGroups($groups);
+		}
+
+		return $this;
+	}
+
 	public function notNull() {
 		$this->filter[] = function (QueryBuilder $qb) {
 			$qb->andWhere('r.value IS NOT NULL');
 		};
 		return $this;
 	}
-	
+
 	public function activeStudent($active = TRUE) {
 		$this->filter[] = function (QueryBuilder $qb) use ($active) {
 			$qb->andWhere('st.archived = :archived', !$active);
 		};
 		return $this;
 	}
-	
+
 	public function groupBy($column = "r.round") {
 		$this->filter[] = function(QueryBuilder $qb) use ($column) {
 			$qb->groupBy($column);
 		};
 		return $this;
 	}
-	
+
 	public function addOrder(array $arg) {
 		$this->filter[] = function(QueryBuilder $qb) use ($arg) {
-			foreach($arg AS $sort => $order) {
+			foreach ($arg AS $sort => $order) {
 				$qb->addOrderBy($sort, $order);
-			}			
+			}
 		};
 		return $this;
 	}
 
-	
 	/**
 	 * @param \Kdyby\Persistence\Queryable $repository
 	 * @return \Doctrine\ORM\Query|\Doctrine\ORM\QueryBuilder

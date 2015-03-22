@@ -1,0 +1,29 @@
+{* Latte template *}
+
+{block content}
+<h1 n:block="title">Pořadí žáků v ročníku</h1>
+
+{control gradeForm}
+
+{ifset $resultas}
+	{foreach $sports AS $sport}
+		<h2>{$sport->name}</h2>
+		<div class="col-md-6">
+		<h3>muži</h3>
+		{ifset $resultas[$sport->id][male]}
+			<ol n:inner-foreach="$resultas[$sport->id][male] AS $result">
+				<li>{$result[0]->student->name}: {$result[orderValue]}{$sport->unit}</li>
+			</ol>
+		{/ifset}
+		</div>
+		<div class="col-md-6">
+		<h3>ženy</h3>
+		{ifset $resultas[$sport->id][female]}
+			<ol n:inner-foreach="$resultas[$sport->id][female] AS $result">
+				{dump $result[orderValue]}
+				<li>{$result[0]->student->name}: {$result[orderValue]}{$sport->unit}</li>
+			</ol>
+		{/ifset}
+		</div>
+	{/foreach}
+{/ifset}

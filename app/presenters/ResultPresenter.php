@@ -178,7 +178,24 @@ class ResultPresenter extends BasePresenter {
 		$this->template->sportas = $sportas;
 		$this->template->sportResults = $sportResults;
 		$this->template->group = $this->group;
-	
+	}
+
+	public function actionBest($id = NULL) {
+		if (is_numeric($id)) {
+			$groups = $this->groups->findBy(["grade" => $id]);
+			$this["gradeForm-grade"]->setDefaultValue($id);
+
+			$resultas = array();
+			$sports = $this->sports->findGlobalAndLocal($this->school);
+			foreach ($sports AS $sport) {
+				$queryObject = (new ResultsQuery())->getBest($sport->bigger_is_better, $sport, $groups);
+
+				$resultas[$sport->id]["male"] = $this->results->fetch($queryObject->byGender('male'));
+				$resultas[$sport->id]["female"] = $this->results->fetch($queryObject->byGender('female'));
+			}
+			$this->template->sports = $sports;
+			$this->template->resultas = $resultas;
+		}
 	}
 
 	public function handleDeleteRound($round) {
@@ -190,6 +207,22 @@ class ResultPresenter extends BasePresenter {
 			$this->flashMessage("Toto nemáte právo editovat", "error");
 		}
 		$this->redirect('this');
+	}
+
+	protected function createComponentGradeForm() {
+		$form = new \Nette\Application\UI\Form;
+		$grades = array();
+		foreach ($this->school->groups AS $group) {
+			$grades[$group->grade->id] = $group->grade->name;
+		}
+		$form->addSelect('grade', 'ročník', $grades);
+		$form->addSubmit('save', 'Vybrat');
+		$form->onSuccess[] = function( \Nette\Application\UI\Form $form) {
+			$this->redirect("this", $form->values->grade);
+		};
+		$form->setRenderer(new \Nextras\Forms\Rendering\Bs3FormRenderer());
+		$form->getElementPrototype()->addClass('form-inline');
+		return $form;
 	}
 
 	protected function createComponentSelectForm() {
