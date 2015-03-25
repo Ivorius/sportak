@@ -44,6 +44,7 @@ class ResultControlForm extends Nette\Application\UI\Control {
 
 		$form->addSubmit('save', 'Vybrat');
 		$form->setRenderer(new \Nextras\Forms\Rendering\Bs3FormRenderer);
+		$form->addProtection();
 		$form->getElementPrototype()->addClass('form-inline');
 
 		$form->onSuccess[] = function (Form $form) {
