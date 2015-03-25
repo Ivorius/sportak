@@ -49,7 +49,7 @@
 		<header role="banner">
 			<div class="navbar navbar-inverse navbar-fixed-top up">
 				<div class="container"> 
-					<p class="navbar-text">{if $user->isLoggedIn()}<a n:href="Sign:out">Odhlásit se {$user->identity->email}</a>{else}<a n:href="Sign:in">Přihlásit se</a> | <a n:href="User:registration">Registrace</a>{/if}</p>
+					<p class="navbar-text">{if $user->isLoggedIn()}<a n:href="Sign:out">Odhlásit se {$user->identity->email}</a>{else}<a n:href="Sign:in">Přihlásit se</a> | <a n:href="Registration:">Registrace</a>{/if}</p>
 				</div>					
 			</div>
 

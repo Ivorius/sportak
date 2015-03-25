@@ -29,7 +29,7 @@ class RegistrationPresenter extends BasePresenter {
 	
 	
 
-	public function renderDefault($id) {
+	public function actionDefault() {
 		$this->userEntity =  new App\Entity\User();
 
 		$component = $this['editUser'];
